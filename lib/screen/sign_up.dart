@@ -1,9 +1,11 @@
 import 'dart:typed_data';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:project_a/constants/gaps.dart';
 import 'package:project_a/constants/sizes.dart';
+import 'package:project_a/firebase/auth.dart';
 import 'package:project_a/screen/login.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -14,6 +16,7 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpPage> {
+  String? errorMessage = '';
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _bioController = TextEditingController();
@@ -36,6 +39,23 @@ class _SignUpScreenState extends State<SignUpPage> {
         builder: (context) => LoginPage(),
       ),
     );
+  }
+
+  Future<void> createUserWithEmailAndPassword() async {
+    try {
+      await Auth().createUserWithEmailAndPassword(
+          email: _emailController.text, password: _passwordController.text);
+      goLoginPage();
+    } on FirebaseException catch (e) {
+      setState(() {
+        errorMessage = e.message;
+      });
+      SnackBar(content: Text('에러발생'));
+    }
+  }
+
+  Widget _errorMessage() {
+    return Text(errorMessage == '' ? '' : '에러발생 $errorMessage');
   }
 
   @override
@@ -163,7 +183,7 @@ class _SignUpScreenState extends State<SignUpPage> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: goLoginPage,
+                  onTap: createUserWithEmailAndPassword,
                   child: Container(
                     child: Text(
                       "로그인.",

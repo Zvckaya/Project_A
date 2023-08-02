@@ -1,7 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:project_a/constants/gaps.dart';
 import 'package:project_a/constants/sizes.dart';
+import 'package:project_a/firebase/auth.dart';
 import 'package:project_a/screen/sign_up.dart';
 
 class LoginPage extends StatefulWidget {
@@ -12,6 +15,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  String? errorMessage = '';
+  bool isLogin = true;
   late TextEditingController _idController;
   late TextEditingController _passwordController;
 
@@ -27,6 +32,20 @@ class _LoginPageState extends State<LoginPage> {
     _idController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+
+  Future<void> signInWithEamilAndPassword() async {
+    try {
+      await Auth().signInWithEmailAndPassword(
+          email: _idController.text, password: _passwordController.text);
+      setState(() {
+        isLogin = false;
+      });
+    } on FirebaseAuthException catch (e) {
+      setState(() {
+        errorMessage = e.message;
+      });
+    }
   }
 
   void goSignupPage() {
@@ -92,7 +111,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 TextButton(
-                    onPressed: goSignupPage,
+                    onPressed: signInWithEamilAndPassword,
                     child: Text(
                       '회원가입',
                       style: TextStyle(
