@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:project_a/constants/gaps.dart';
 import 'package:project_a/constants/sizes.dart';
 import 'package:project_a/firebase/auth.dart';
+import 'package:project_a/screen/home.dart';
 import 'package:project_a/screen/sign_up.dart';
 
 class LoginPage extends StatefulWidget {
@@ -38,9 +39,8 @@ class _LoginPageState extends State<LoginPage> {
     try {
       await Auth().signInWithEmailAndPassword(
           email: _idController.text, password: _passwordController.text);
-      setState(() {
-        isLogin = false;
-      });
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => HomePage()));
     } on FirebaseAuthException catch (e) {
       setState(() {
         errorMessage = e.message;
@@ -107,11 +107,11 @@ class _LoginPageState extends State<LoginPage> {
                     padding: EdgeInsets.all(0),
                     color: Theme.of(context).primaryColor,
                     borderRadius: BorderRadius.circular(10),
-                    onPressed: () {},
+                    onPressed: signInWithEamilAndPassword,
                   ),
                 ),
                 TextButton(
-                    onPressed: signInWithEamilAndPassword,
+                    onPressed: goSignupPage,
                     child: Text(
                       '회원가입',
                       style: TextStyle(

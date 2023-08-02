@@ -146,7 +146,7 @@ class _SignUpScreenState extends State<SignUpPage> {
             ),
             Gaps.v24,
             InkWell(
-              onTap: () {},
+              onTap: createUserWithEmailAndPassword,
               child: Container(
                 child: _isLoading
                     ? Center(
@@ -183,7 +183,7 @@ class _SignUpScreenState extends State<SignUpPage> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: createUserWithEmailAndPassword,
+                  onTap: goLoginPage,
                   child: Container(
                     child: Text(
                       "로그인.",
