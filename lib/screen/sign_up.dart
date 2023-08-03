@@ -19,7 +19,7 @@ class _SignUpScreenState extends State<SignUpPage> {
   String? errorMessage = '';
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _bioController = TextEditingController();
+  final TextEditingController _sidController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   Uint8List? _image;
   bool _isLoading = false;
@@ -28,7 +28,7 @@ class _SignUpScreenState extends State<SignUpPage> {
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
-    _bioController.dispose();
+    _sidController.dispose();
     _usernameController.dispose();
     super.dispose();
   }
@@ -44,7 +44,10 @@ class _SignUpScreenState extends State<SignUpPage> {
   Future<void> createUserWithEmailAndPassword() async {
     try {
       await Auth().createUserWithEmailAndPassword(
-          email: _emailController.text, password: _passwordController.text);
+          email: _emailController.text,
+          password: _passwordController.text,
+          username: _usernameController.text,
+          studentId: _sidController.text as int);
       goLoginPage();
     } on FirebaseException catch (e) {
       setState(() {
@@ -142,7 +145,7 @@ class _SignUpScreenState extends State<SignUpPage> {
                   borderRadius: BorderRadius.circular(10)),
               placeholder: '학번을 입력하세요',
               keyboardType: TextInputType.emailAddress,
-              controller: _bioController,
+              controller: _sidController,
             ),
             Gaps.v24,
             InkWell(
