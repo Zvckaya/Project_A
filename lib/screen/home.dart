@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:project_a/firebase/auth.dart';
 import 'package:project_a/firebase/user_provider.dart';
+import 'package:project_a/screen/mypage.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -14,7 +15,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final User? user = Auth().currentUser;
+  @override
+  void initState() {
+    super.initState();
+    addData();
+  }
 
   Future<void> signOut() async {
     await Auth().signOut();
@@ -23,10 +28,6 @@ class _HomePageState extends State<HomePage> {
   addData() async {
     UserProvider userProvider = Provider.of(context, listen: false);
     await userProvider.refreshUser();
-  }
-
-  Widget _userUid() {
-    return Text(user?.email ?? 'User email');
   }
 
   @override
@@ -57,7 +58,10 @@ class _HomePageState extends State<HomePage> {
             padding: const EdgeInsets.only(right: 5),
             child: IconButton(
               icon: Icon(Icons.perm_identity),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => MyPage()));
+              },
             ),
           )
         ],
@@ -66,7 +70,6 @@ class _HomePageState extends State<HomePage> {
         child: Center(
           child: Column(
             children: [
-              _userUid(),
               CupertinoButton(
                 child: Text('로그아웃'),
                 onPressed: signOut,

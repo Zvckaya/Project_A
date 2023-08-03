@@ -14,15 +14,14 @@ class User {
   });
 
   Map<String, dynamic> toJson() => {
-        "username": username,
-        "uid": uid,
-        "email": email,
-        "studentId": studentId.toString()
+        'username': username,
+        'uid': uid,
+        'email': email,
+        'studentId': studentId
       };
 
   static User fromStore(DocumentSnapshot snap) {
     var data = snap.data() as Map<String, dynamic>;
-
     return User(
         email: data['email'],
         uid: data['uid'],

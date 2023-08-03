@@ -4,16 +4,17 @@ import 'package:project_a/models/user.dart' as model;
 
 class Auth {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final _firestore = FirebaseFirestore.instance;
 
   User? get currentUser => _firebaseAuth.currentUser;
 
-  Stream<User?> get authStateChanges => _firebaseAuth.authStateChanges();
-
   Future<model.User> getUserDetails() async {
     User currentUser = _firebaseAuth.currentUser!;
+
     DocumentSnapshot documentSnapshot =
         await _firestore.collection('users').doc(currentUser.uid).get();
+    print(_firestore.collection('users').doc(currentUser.uid));
+    print('데이터 실행');
     return model.User.fromStore(documentSnapshot);
   }
 
