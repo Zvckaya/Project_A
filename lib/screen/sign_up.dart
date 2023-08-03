@@ -36,7 +36,7 @@ class _SignUpScreenState extends State<SignUpPage> {
   void goLoginPage() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => LoginPage(),
+        builder: (context) => const LoginPage(),
       ),
     );
   }
@@ -50,7 +50,7 @@ class _SignUpScreenState extends State<SignUpPage> {
           email: _emailController.text,
           password: _passwordController.text,
           username: _usernameController.text,
-          studentId: _sidController.text as int);
+          studentId: _sidController.text);
 
       goLoginPage();
     } on FirebaseException catch (e) {
@@ -95,28 +95,6 @@ class _SignUpScreenState extends State<SignUpPage> {
               ],
             ),
             Gaps.v10,
-            Stack(
-              children: [
-                _image != null
-                    ? CircleAvatar(
-                        radius: 64,
-                        backgroundImage: MemoryImage(_image!),
-                      )
-                    : const CircleAvatar(
-                        radius: 64,
-                        backgroundImage: NetworkImage(
-                            "https://i.pinimg.com/originals/f1/0f/f7/f10ff70a7155e5ab666bcdd1b45b726d.jpg"),
-                      ),
-                Positioned(
-                  bottom: -10,
-                  left: 80,
-                  child: IconButton(
-                    onPressed: () {},
-                    icon: Icon(Icons.add_a_photo),
-                  ),
-                )
-              ],
-            ),
             Gaps.v24,
             CupertinoTextField.borderless(
               decoration: BoxDecoration(
@@ -151,7 +129,7 @@ class _SignUpScreenState extends State<SignUpPage> {
                   color: const Color.fromARGB(255, 109, 109, 109),
                   borderRadius: BorderRadius.circular(10)),
               placeholder: '학번을 입력하세요',
-              keyboardType: TextInputType.emailAddress,
+              keyboardType: TextInputType.text,
               controller: _sidController,
             ),
             Gaps.v24,
@@ -161,7 +139,7 @@ class _SignUpScreenState extends State<SignUpPage> {
                 child: _isLoading
                     ? Center(
                         child: CircularProgressIndicator(
-                          color: Theme.of(context).primaryColor,
+                          color: Colors.white,
                         ),
                       )
                     : Text('회원가입'),

@@ -29,7 +29,7 @@ class Auth {
       {required String email,
       required String password,
       required String username,
-      required int studentId}) async {
+      required String studentId}) async {
     UserCredential cred = await _firebaseAuth.createUserWithEmailAndPassword(
         email: email, password: password);
 

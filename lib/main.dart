@@ -27,7 +27,13 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'mytime',
-        theme: ThemeData.dark().copyWith(primaryColor: Colors.cyan),
+        theme: ThemeData.dark().copyWith(
+          primaryColor: Colors.cyan,
+          cupertinoOverrideTheme: CupertinoThemeData(
+              textTheme: CupertinoTextThemeData(
+            textStyle: TextStyle(color: Colors.white),
+          )),
+        ),
         home: StreamBuilder(
           stream: Auth().authStateChanges,
           builder: (context, snapshot) {

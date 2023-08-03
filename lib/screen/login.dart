@@ -17,7 +17,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   String? errorMessage = '';
-  bool isLogin = true;
+  bool isLoading = false;
   late TextEditingController _idController;
   late TextEditingController _passwordController;
 
@@ -37,10 +37,11 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> signInWithEamilAndPassword() async {
     try {
+      setState(() {
+        isLoading = true;
+      });
       await Auth().signInWithEmailAndPassword(
           email: _idController.text, password: _passwordController.text);
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => HomePage()));
     } on FirebaseAuthException catch (e) {
       setState(() {
         errorMessage = e.message;
@@ -96,23 +97,35 @@ class _LoginPageState extends State<LoginPage> {
                       borderRadius: BorderRadius.circular(10)),
                   controller: _passwordController,
                   placeholder: '비밀번호',
+                  obscureText: true,
                 ),
                 Gaps.v10,
-                Container(
-                  width: double.infinity,
-                  height: 35,
-                  child: CupertinoButton(
-                    child: Text('마이타임 로그인'),
-                    minSize: 0.0,
-                    padding: EdgeInsets.all(0),
-                    color: Theme.of(context).primaryColor,
-                    borderRadius: BorderRadius.circular(10),
-                    onPressed: signInWithEamilAndPassword,
+                InkWell(
+                  onTap: signInWithEamilAndPassword,
+                  child: Container(
+                    child: isLoading
+                        ? Center(
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                            ),
+                          )
+                        : Text('마이타임 로그인'),
+                    width: double.infinity,
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.symmetric(vertical: Sizes.size12),
+                    decoration: const ShapeDecoration(
+                      color: Colors.cyan,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
                 TextButton(
                     onPressed: goSignupPage,
-                    child: Text(
+                    child: const Text(
                       '회원가입',
                       style: TextStyle(
                           color: Colors.white, fontWeight: FontWeight.bold),

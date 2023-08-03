@@ -3,18 +3,26 @@ import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
 import 'package:project_a/firebase/auth.dart';
+import 'package:project_a/firebase/user_provider.dart';
+import 'package:provider/provider.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   HomePage({super.key});
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   final User? user = Auth().currentUser;
 
   Future<void> signOut() async {
     await Auth().signOut();
   }
 
-  Widget _title() {
-    return const Text('Firebase Auth');
+  addData() async {
+    UserProvider userProvider = Provider.of(context, listen: false);
+    await userProvider.refreshUser();
   }
 
   Widget _userUid() {
@@ -59,7 +67,10 @@ class HomePage extends StatelessWidget {
           child: Column(
             children: [
               _userUid(),
-              CupertinoButton(child: Text('로그아웃'), onPressed: signOut),
+              CupertinoButton(
+                child: Text('로그아웃'),
+                onPressed: signOut,
+              ),
             ],
           ),
         ),
