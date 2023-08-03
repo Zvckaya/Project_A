@@ -42,24 +42,31 @@ class _SignUpScreenState extends State<SignUpPage> {
   }
 
   Future<void> createUserWithEmailAndPassword() async {
+    setState(() {
+      _isLoading = true;
+    });
     try {
       await Auth().createUserWithEmailAndPassword(
           email: _emailController.text,
           password: _passwordController.text,
           username: _usernameController.text,
           studentId: _sidController.text as int);
+
       goLoginPage();
     } on FirebaseException catch (e) {
       setState(() {
+        _isLoading = false;
         errorMessage = e.message;
       });
-      SnackBar(content: Text('에러발생'));
+      const SnackBar(
+        content: Text('회원가입에 실패하였습니다'),
+      );
     }
   }
 
-  Widget _errorMessage() {
-    return Text(errorMessage == '' ? '' : '에러발생 $errorMessage');
-  }
+  // Widget _errorMessage() {
+  //   return Text(errorMessage == '' ? '' : '에러발생 $errorMessage');
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +84,7 @@ class _SignUpScreenState extends State<SignUpPage> {
             ),
             Column(
               children: [
-                Text("대학 생활을 더 편하고 즐겁게"),
+                const Text("대학 생활을 더 편하고 즐겁게"),
                 Text(
                   "마이 타임",
                   style: TextStyle(
@@ -95,7 +102,7 @@ class _SignUpScreenState extends State<SignUpPage> {
                         radius: 64,
                         backgroundImage: MemoryImage(_image!),
                       )
-                    : CircleAvatar(
+                    : const CircleAvatar(
                         radius: 64,
                         backgroundImage: NetworkImage(
                             "https://i.pinimg.com/originals/f1/0f/f7/f10ff70a7155e5ab666bcdd1b45b726d.jpg"),

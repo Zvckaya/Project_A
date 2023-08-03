@@ -31,11 +31,17 @@ class MyApp extends StatelessWidget {
         home: StreamBuilder(
           stream: Auth().authStateChanges,
           builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return HomePage();
-            } else {
-              return const LoginPage();
+            if (snapshot.connectionState == ConnectionState.active) {
+              if (snapshot.hasData) {
+                return HomePage();
+              }
             }
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator(
+                color: Theme.of(context).primaryColor,
+              );
+            }
+            return const LoginPage();
           },
         ),
       ),
