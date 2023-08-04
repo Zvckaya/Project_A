@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:project_a/firebase/auth.dart';
 import 'package:project_a/firebase/user_provider.dart';
 import 'package:project_a/screen/mypage.dart';
+import 'package:project_a/widget/Button_logout.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -69,12 +70,7 @@ class _HomePageState extends State<HomePage> {
       body: SafeArea(
         child: Center(
           child: Column(
-            children: [
-              CupertinoButton(
-                child: Text('로그아웃'),
-                onPressed: signOut,
-              ),
-            ],
+            children: [cupButton("logout", signOut)],
           ),
         ),
       ),
