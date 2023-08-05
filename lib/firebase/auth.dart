@@ -8,6 +8,8 @@ class Auth {
 
   User? get currentUser => _firebaseAuth.currentUser;
 
+  Stream<User?> get authStateChanges => _firebaseAuth.authStateChanges();
+
   Future<model.User> getUserDetails() async {
     User currentUser = _firebaseAuth.currentUser!;
 
@@ -41,6 +43,7 @@ class Auth {
         studentId: studentId);
 
     await _firestore.collection("users").doc(cred.user!.uid).set(user.toJson());
+    print('유저생성완료');
   }
 
   Future<void> signOut() async {

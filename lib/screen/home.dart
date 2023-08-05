@@ -7,11 +7,12 @@ import 'package:project_a/constants/sizes.dart';
 import 'package:project_a/firebase/auth.dart';
 import 'package:project_a/firebase/user_provider.dart';
 import 'package:project_a/screen/mypage.dart';
+import 'package:project_a/utils/page_provider.dart';
 import 'package:project_a/widget/cupButton.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({super.key});
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -26,7 +27,12 @@ class _HomePageState extends State<HomePage> {
 
   addData() async {
     UserProvider userProvider = Provider.of(context, listen: false);
+
     await userProvider.refreshUser();
+  }
+
+  Future<void> signOut() async {
+    await Auth().signOut();
   }
 
   @override
@@ -56,12 +62,8 @@ class _HomePageState extends State<HomePage> {
           Padding(
             padding: const EdgeInsets.only(right: 5),
             child: IconButton(
-              icon: Icon(Icons.perm_identity),
-              onPressed: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => MyPage()));
-              },
-            ),
+                icon: Icon(Icons.perm_identity),
+                onPressed: context.read<PageProvider>().selectPage(2)),
           )
         ],
       ),
@@ -72,43 +74,49 @@ class _HomePageState extends State<HomePage> {
             height: 200,
             child: Padding(
               padding: const EdgeInsets.only(top: 8),
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (BuildContext context, int index) {
-                  return Padding(
-                    padding: const EdgeInsets.only(left: 20),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: const Color.fromARGB(255, 78, 78, 78),
-                          borderRadius: BorderRadius.circular(10)),
-                      width: 300,
-                      height: 100,
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Text(
-                                  '오늘의 일정 💡',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+              child: ListView(scrollDirection: Axis.horizontal, children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 20),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: const Color.fromARGB(255, 78, 78, 78),
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                            color: Color.fromARGB(255, 101, 101, 101))),
+                    width: 300,
+                    height: 100,
+                    child: Padding(
+                      padding: EdgeInsets.all(20.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                '오늘의 소식 💡',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 20),
+                              ),
+                            ],
+                          ),
+                          Chip(
+                            label: Text('학사일정'),
+                            backgroundColor: Colors.black26,
+                          )
+                        ],
                       ),
                     ),
-                  );
-                },
-                itemCount: 5,
-              ),
+                  ),
+                )
+              ]),
             ),
           ),
           Gaps.v44,
+          CupertinoButton(
+            child: Text('로그아웃'),
+            color: Colors.cyan,
+            onPressed: signOut,
+          )
         ],
       ),
     );

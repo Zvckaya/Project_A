@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:project_a/firebase/auth.dart';
 import 'package:project_a/firebase/user_provider.dart';
+import 'package:project_a/page_selector.dart';
 import 'package:project_a/screen/home.dart';
 import 'package:project_a/screen/login.dart';
 import 'package:provider/provider.dart';
@@ -24,6 +25,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (cnt) => UserProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (cnt) => PageController(),
+        )
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -31,16 +35,17 @@ class MyApp extends StatelessWidget {
         theme: ThemeData.dark().copyWith(
           primaryColor: Colors.cyan,
           cupertinoOverrideTheme: CupertinoThemeData(
-              textTheme: CupertinoTextThemeData(
-            textStyle: TextStyle(color: Colors.white),
-          )),
+            textTheme: CupertinoTextThemeData(
+              textStyle: TextStyle(color: Colors.white),
+            ),
+          ),
         ),
         home: StreamBuilder(
-          stream: FirebaseAuth.instance.authStateChanges(),
+          stream: Auth().authStateChanges,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.active) {
               if (snapshot.hasData) {
-                return HomePage();
+                return PageSelector();
               }
             }
             if (snapshot.connectionState == ConnectionState.waiting) {
