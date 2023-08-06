@@ -8,6 +8,7 @@ class PageProvider with ChangeNotifier {
 
   selectPage(int index) {
     _nowPage = index;
+    print('현재페이지는 ${_nowPage}');
     notifyListeners();
   }
 }

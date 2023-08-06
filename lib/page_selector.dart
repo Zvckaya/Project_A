@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:project_a/firebase/user_provider.dart';
 import 'package:project_a/models/user.dart' as model;
 import 'package:project_a/utils/dimesions.dart';
+import 'package:project_a/utils/page_provider.dart';
 import 'package:provider/provider.dart';
 
 class PageSelector extends StatefulWidget {
@@ -19,7 +20,13 @@ class _PageSelectorState extends State<PageSelector> {
   @override
   void initState() {
     pageController = PageController();
+    addDate();
     super.initState();
+  }
+
+  addDate() async {
+    UserProvider userProvider = Provider.of(context, listen: false);
+    await userProvider.refreshUser();
   }
 
   @override
@@ -34,11 +41,10 @@ class _PageSelectorState extends State<PageSelector> {
 
   void onPageChanged(int page) {
     setState(() {
-      _page = page;
+      _page = PageProvider().currentPage;
     });
+    navigationTap(_page);
   }
-
-  void changePage() {}
 
   @override
   Widget build(BuildContext context) {
@@ -46,14 +52,15 @@ class _PageSelectorState extends State<PageSelector> {
     return user == null
         ? const Center(
             child: CircularProgressIndicator(
-            color: Colors.white,
-          ))
+              color: Colors.white,
+            ),
+          )
         : Scaffold(
             body: PageView(
-              physics: NeverScrollableScrollPhysics(),
+              // physics: NeverScrollableScrollPhysics(),
               children: homeScreen,
               controller: pageController,
-              onPageChanged: onPageChanged,
+              // onPageChanged: onPageChanged,
             ),
           );
   }

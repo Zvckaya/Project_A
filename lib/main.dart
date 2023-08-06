@@ -7,6 +7,7 @@ import 'package:project_a/firebase/user_provider.dart';
 import 'package:project_a/page_selector.dart';
 import 'package:project_a/screen/home.dart';
 import 'package:project_a/screen/login.dart';
+import 'package:project_a/utils/page_provider.dart';
 import 'package:provider/provider.dart';
 
 Future<void> main() async {
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
           create: (cnt) => UserProvider(),
         ),
         ChangeNotifierProvider(
-          create: (cnt) => PageController(),
+          create: (cnt) => PageProvider(),
         )
       ],
       child: MaterialApp(
