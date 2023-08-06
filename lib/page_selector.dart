@@ -43,7 +43,6 @@ class _PageSelectorState extends State<PageSelector> {
     setState(() {
       _page = PageProvider().currentPage;
     });
-    navigationTap(_page);
   }
 
   @override
@@ -57,10 +56,10 @@ class _PageSelectorState extends State<PageSelector> {
           )
         : Scaffold(
             body: PageView(
-              // physics: NeverScrollableScrollPhysics(),
+              physics: NeverScrollableScrollPhysics(),
               children: homeScreen,
               controller: pageController,
-              // onPageChanged: onPageChanged,
+              onPageChanged: onPageChanged,
             ),
           );
   }

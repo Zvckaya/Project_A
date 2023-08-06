@@ -8,7 +8,9 @@ import 'package:project_a/firebase/auth.dart';
 import 'package:project_a/firebase/user_provider.dart';
 import 'package:project_a/screen/mypage.dart';
 import 'package:project_a/utils/page_provider.dart';
+import 'package:project_a/widget/board_headline.dart';
 import 'package:project_a/widget/cupButton.dart';
+import 'package:project_a/widget/custom_icon.dart';
 import 'package:project_a/widget/today_news.dart';
 import 'package:provider/provider.dart';
 
@@ -89,6 +91,8 @@ class _HomePageState extends State<HomePage> {
                 Padding(
                   padding: const EdgeInsets.only(left: 20),
                   child: Container(
+                    padding: EdgeInsets.all(20),
+                    width: 300,
                     decoration: BoxDecoration(
                       color: const Color.fromARGB(255, 78, 78, 78),
                       borderRadius: BorderRadius.circular(10),
@@ -98,7 +102,22 @@ class _HomePageState extends State<HomePage> {
                     ),
                     child: Row(children: [
                       Column(
-                        children: [Text("할일추가")],
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                "오늘의 할일 ☑️",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 20),
+                              ),
+                            ],
+                          ),
+                          Chip(
+                            label: Text('추가 ➕'),
+                            backgroundColor: Colors.black26,
+                          )
+                        ],
                       )
                     ]),
                   ),
@@ -106,12 +125,65 @@ class _HomePageState extends State<HomePage> {
               ]),
             ),
           ),
-          Gaps.v44,
-          CupertinoButton(
-            child: Text('로그아웃'),
-            color: Colors.cyan,
-            onPressed: signOut,
-          )
+          Gaps.v24,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              custom_icon(
+                myicon: Icons.home,
+                mytext: '학교홈',
+              ),
+              Gaps.h10,
+              custom_icon(
+                myicon: Icons.alarm,
+                mytext: '학사공지',
+              ),
+              Gaps.h10,
+              custom_icon(
+                myicon: Icons.calendar_month,
+                mytext: '학사일정',
+              )
+            ],
+          ),
+          Gaps.v20,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              height: 150,
+              decoration: BoxDecoration(
+                color: const Color.fromARGB(255, 78, 78, 78),
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(
+                  color: Color.fromARGB(255, 101, 101, 101),
+                ),
+              ),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '게시판',
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    Gaps.v10,
+                    board_headline(
+                      board_name: '자유게시판',
+                      board_detail: '수강신청 성공하는법',
+                    ),
+                    Gaps.v10,
+                    board_headline(
+                      board_name: '비밀게시판',
+                      board_detail: '내가 고민이 있다.',
+                    ),
+                    Gaps.v10,
+                    board_headline(
+                      board_name: '장터게시판',
+                      board_detail: '전공책 팝니다',
+                    )
+                  ]),
+            ),
+          ),
         ],
       ),
     );
