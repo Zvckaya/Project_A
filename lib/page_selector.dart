@@ -56,7 +56,7 @@ class _PageSelectorState extends State<PageSelector> {
           )
         : Scaffold(
             body: PageView(
-              physics: NeverScrollableScrollPhysics(),
+              // physics: NeverScrollableScrollPhysics(),
               children: homeScreen,
               controller: pageController,
               onPageChanged: onPageChanged,
