@@ -1,9 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Today_news extends StatelessWidget {
   const Today_news({
     super.key,
   });
+
+  _openURL() async {
+    const url = 'https://www.skhu.ac.kr/skhu/802/subview.do';
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    } else {
+      throw '사이트를 열 수 없습니다';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,9 +38,12 @@ class Today_news extends StatelessWidget {
                 ),
               ],
             ),
-            Chip(
-              label: Text('학사일정'),
-              backgroundColor: Colors.black26,
+            InkWell(
+              onTap: _openURL,
+              child: Chip(
+                label: Text('학사일정'),
+                backgroundColor: Colors.black26,
+              ),
             )
           ],
         ),

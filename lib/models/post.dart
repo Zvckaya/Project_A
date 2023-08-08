@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 
 class Post {
   final String title;
@@ -8,16 +9,17 @@ class Post {
   final like;
   final String postId;
   final DateTime datePublished;
+  final bool anonymous;
 
-  const Post({
-    required this.title,
-    required this.description,
-    required this.uid,
-    required this.username,
-    required this.like,
-    required this.postId,
-    required this.datePublished,
-  });
+  const Post(
+      {required this.title,
+      required this.description,
+      required this.uid,
+      required this.username,
+      required this.like,
+      required this.postId,
+      required this.datePublished,
+      required this.anonymous});
 
   static Post fromSnap(DocumentSnapshot snap) {
     var snapshot = snap.data() as Map<String, dynamic>;
@@ -29,7 +31,8 @@ class Post {
         username: snapshot["username"],
         like: snapshot["like"],
         postId: snapshot["postId"],
-        datePublished: snapshot["datePublished"]);
+        datePublished: snapshot["datePublished"],
+        anonymous: snapshot["anonymous"]);
   }
 
   Map<String, dynamic> toJson() => {
@@ -39,6 +42,7 @@ class Post {
         "username": username,
         "like": like,
         "postId": postId,
-        "datePublished": datePublished
+        "datePublished": datePublished,
+        "anonymous": anonymous
       };
 }

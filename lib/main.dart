@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:project_a/firebase/auth.dart';
 import 'package:project_a/firebase/user_provider.dart';
 import 'package:project_a/page_selector.dart';
-import 'package:project_a/screen/home.dart';
+import 'package:project_a/screen/add_post_screen.dart';
 import 'package:project_a/screen/login.dart';
 import 'package:project_a/utils/page_provider.dart';
 import 'package:provider/provider.dart';
@@ -34,13 +34,17 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'mytime',
         theme: ThemeData.dark().copyWith(
-          primaryColor: Colors.cyan,
-          cupertinoOverrideTheme: CupertinoThemeData(
-            textTheme: CupertinoTextThemeData(
-              textStyle: TextStyle(color: Colors.white),
+            appBarTheme: AppBarTheme(
+              elevation: 0,
+              color: Colors.grey.shade900,
             ),
-          ),
-        ),
+            primaryColor: Colors.cyan,
+            cupertinoOverrideTheme: CupertinoThemeData(
+              textTheme: CupertinoTextThemeData(
+                textStyle: TextStyle(color: Colors.white),
+              ),
+            ),
+            scaffoldBackgroundColor: Colors.grey.shade900),
         home: StreamBuilder(
           stream: Auth().authStateChanges,
           builder: (context, snapshot) {

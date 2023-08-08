@@ -16,7 +16,7 @@ class Auth {
     DocumentSnapshot documentSnapshot =
         await _firestore.collection('users').doc(currentUser.uid).get();
     print(_firestore.collection('users').doc(currentUser.uid));
-    print('데이터 실행');
+
     return model.User.fromStore(documentSnapshot);
   }
 

@@ -4,25 +4,22 @@ import 'package:flutter/material.dart';
 import 'package:project_a/screen/add_post_screen.dart';
 import 'package:project_a/widget/postcard.dart';
 
-class FreeBoard extends StatefulWidget {
-  const FreeBoard({super.key});
+class SecretBoard extends StatefulWidget {
+  const SecretBoard({super.key});
 
   @override
-  State<FreeBoard> createState() => _FreeBoardState();
+  State<SecretBoard> createState() => _FreeBoardState();
 }
 
-class _FreeBoardState extends State<FreeBoard> {
+class _FreeBoardState extends State<SecretBoard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('자유게시판'),
+        title: Text('비밀게시판'),
       ),
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance
-            .collection('posts')
-            .orderBy("datePublished", descending: true)
-            .snapshots(),
+        stream: FirebaseFirestore.instance.collection('sec_posts').snapshots(),
         builder: (context,
             AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -63,7 +60,7 @@ class _FreeBoardState extends State<FreeBoard> {
             PageRouteBuilder(
               pageBuilder: (context, animation, secondaryAnimation) =>
                   AddPostScreen(
-                board_type: "free",
+                board_type: "sec",
               ),
               transitionsBuilder:
                   (context, animation, secondaryAnimation, child) {

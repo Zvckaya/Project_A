@@ -8,7 +8,8 @@ import 'package:project_a/models/user.dart';
 import 'package:provider/provider.dart';
 
 class AddPostScreen extends StatefulWidget {
-  const AddPostScreen({super.key});
+  AddPostScreen({super.key, required this.board_type});
+  String board_type;
 
   @override
   State<AddPostScreen> createState() => _AddPostScreenState();
@@ -17,6 +18,7 @@ class AddPostScreen extends StatefulWidget {
 class _AddPostScreenState extends State<AddPostScreen> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
+  bool _anonymous = true;
 
   void _onSubmitTap() {
     if (_formKey.currentContext != null) {
@@ -32,18 +34,38 @@ class _AddPostScreenState extends State<AddPostScreen> {
       _isLoading = true;
     });
     try {
-      String res = await FirestoreMethods().uploadPost(
-        formDate['title'].toString(),
-        formDate['description'].toString(),
-        uid,
-        username,
+      if (widget.board_type == "free") {
+        String res = await FirestoreMethods().uploadPost(
+            formDate['title'].toString(),
+            formDate['description'].toString(),
+            uid,
+            username,
+            _anonymous);
+        if (res == "success") {
+          setState(() {
+            _isLoading = false;
+          });
+          Navigator.of(context).pop();
+        }
+      } else if (widget.board_type == "sec") {
+        String res = await FirestoreMethods().uploadSecPost(
+            formDate['title'].toString(),
+            formDate['description'].toString(),
+            uid,
+            username,
+            _anonymous);
+        if (res == "success") {
+          setState(() {
+            _isLoading = false;
+          });
+          Navigator.of(context).pop();
+        }
+      }
+    } catch (e) {
+      SnackBar(
+        content: Text(e.toString()),
       );
-      if (res == "sucess") {
-        setState(() {
-          _isLoading = false;
-        });
-      } else {}
-    } catch (e) {}
+    }
   }
 
   Map<String, String> formDate = {};
@@ -72,54 +94,86 @@ class _AddPostScreenState extends State<AddPostScreen> {
           )
         ],
       ),
-      body: Form(
-        key: _formKey,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            children: [
-              Gaps.v24,
-              TextFormField(
-                decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: '제목',
-                    focusColor: Colors.cyan,
-                    focusedBorder: InputBorder.none),
-                validator: (value) {
-                  if (value != null && value.isEmpty) {
-                    return "제목을 작성하세요";
-                  }
-                  return null;
-                },
-                onSaved: (newVal) {
-                  if (newVal != null) {
-                    formDate['title'] = newVal;
-                  }
-                },
+      body: _isLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : Form(
+              key: _formKey,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  children: [
+                    Gaps.v24,
+                    TextFormField(
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: '제목',
+                          focusColor: Colors.cyan,
+                          focusedBorder: InputBorder.none),
+                      validator: (value) {
+                        if (value != null && value.isEmpty) {
+                          return "제목을 작성하세요";
+                        }
+                        return null;
+                      },
+                      onSaved: (newVal) {
+                        if (newVal != null) {
+                          formDate['title'] = newVal;
+                        }
+                      },
+                    ),
+                    Divider(
+                      color: Colors.white,
+                    ),
+                    TextFormField(
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: '내용',
+                          focusColor: Colors.cyan,
+                          focusedBorder: InputBorder.none),
+                      validator: (value) {
+                        if (value != null && value.isEmpty) {
+                          return "내용을 작성하세요";
+                        }
+                        return null;
+                      },
+                      onSaved: (newVal) {
+                        if (newVal != null) {
+                          formDate['description'] = newVal;
+                        }
+                      },
+                    ),
+                  ],
+                ),
               ),
-              Divider(
-                color: Colors.white,
+            ),
+      bottomNavigationBar: BottomAppBar(
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(children: [
+              IconButton(
+                onPressed: () {},
+                icon: Icon(Icons.photo),
               ),
-              TextFormField(
-                decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: '내용',
-                    focusColor: Colors.cyan,
-                    focusedBorder: InputBorder.none),
-                validator: (value) {
-                  if (value != null && value.isEmpty) {
-                    return "내용을 작성하세요";
-                  }
-                  return null;
-                },
-                onSaved: (newVal) {
-                  if (newVal != null) {
-                    formDate['description'] = newVal;
-                  }
-                },
-              ),
-            ],
-          ),
+              Text('사진 추가하기'),
+            ]),
+            Row(
+              children: [
+                Checkbox(
+                  value: _anonymous,
+                  onChanged: (val) {
+                    setState(() {
+                      _anonymous = val!;
+                    });
+                  },
+                ),
+                Text('익명')
+              ],
+            )
+          ],
         ),
       ),
     );
