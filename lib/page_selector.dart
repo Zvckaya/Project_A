@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:project_a/firebase/user_provider.dart';
 import 'package:project_a/models/user.dart' as model;
+import 'package:project_a/screen/home.dart';
+import 'package:project_a/screen/mypage.dart';
 import 'package:project_a/utils/dimesions.dart';
 import 'package:project_a/utils/page_provider.dart';
 import 'package:provider/provider.dart';
@@ -15,11 +17,14 @@ class PageSelector extends StatefulWidget {
 
 class _PageSelectorState extends State<PageSelector> {
   late PageController pageController;
-  int _page = 0;
+  int currentPage = 0;
+  late PageProvider pageProvider;
 
   @override
   void initState() {
-    pageController = PageController();
+    pageController = PageController(initialPage: 0);
+    pageProvider = Provider.of<PageProvider>(context, listen: false);
+
     addDate();
     super.initState();
   }
@@ -35,19 +40,15 @@ class _PageSelectorState extends State<PageSelector> {
     super.dispose();
   }
 
-  void navigationTap(int page) {
-    pageController.jumpToPage(page);
-  }
-
-  void onPageChanged(int page) {
-    setState(() {
-      _page = PageProvider().currentPage;
-    });
+  goMyPage() {
+    pageProvider.goToPage(1);
+    print('실행');
   }
 
   @override
   Widget build(BuildContext context) {
     final model.User? user = Provider.of<UserProvider>(context).getUser;
+
     return user == null
         ? const Center(
             child: CircularProgressIndicator(
@@ -56,10 +57,17 @@ class _PageSelectorState extends State<PageSelector> {
           )
         : Scaffold(
             body: PageView(
-              // physics: NeverScrollableScrollPhysics(),
-              children: homeScreen,
+              physics: NeverScrollableScrollPhysics(),
+              children: [
+                HomePage(
+                  pageNumber: 1,
+                  goNext: goMyPage,
+                ),
+                MyPage(
+                  pageNumber: 2,
+                ),
+              ],
               controller: pageController,
-              onPageChanged: onPageChanged,
             ),
           );
   }

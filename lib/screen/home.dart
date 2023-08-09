@@ -28,8 +28,13 @@ enum SiteUrl {
 }
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
-
+  HomePage({
+    super.key,
+    required this.pageNumber,
+    required this.goNext,
+  });
+  int pageNumber;
+  VoidCallback? goNext;
   @override
   State<HomePage> createState() => _HomePageState();
 }
@@ -114,16 +119,23 @@ class _HomePageState extends State<HomePage> {
             child: Icon(Icons.search),
           ),
           Padding(
-              padding: const EdgeInsets.only(right: 5),
-              child: IconButton(
-                icon: Icon(Icons.perm_identity),
-                onPressed: () {},
-              ))
+            padding: const EdgeInsets.only(right: 5),
+            child: IconButton(
+              icon: Icon(Icons.perm_identity),
+              onPressed: () {
+                widget.goNext;
+              },
+            ),
+          )
         ],
       ),
       body: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          Text(
+            _pageProvider.currentPage.toString(),
+            style: TextStyle(fontSize: 20),
+          ),
           Container(
             height: 200,
             child: Padding(

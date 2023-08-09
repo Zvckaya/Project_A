@@ -3,12 +3,14 @@ import 'package:project_a/firebase/auth.dart';
 import 'package:project_a/models/user.dart';
 
 class PageProvider with ChangeNotifier {
-  int _nowPage = 0;
-  int get currentPage => _nowPage;
+  int _currentPage = 0;
 
-  selectPage(int index) {
-    _nowPage = index;
-    print('현재페이지는 ${_nowPage}');
-    notifyListeners();
+  int get currentPage => _currentPage;
+
+  void goToPage(int page) {
+    if (_currentPage != page) {
+      _currentPage = page;
+      notifyListeners();
+    }
   }
 }

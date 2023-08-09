@@ -54,7 +54,15 @@ class _DetailPostState extends State<DetailPost> {
                   color: Colors.red,
                   size: 20,
                 ),
-                Text('${widget.snap['like'].length}')
+                Text(
+                  '${widget.snap['like'].length}',
+                ),
+                Gaps.h11,
+                Icon(
+                  Icons.message,
+                  size: 20,
+                ),
+                Text('0')
               ],
             )
           ],

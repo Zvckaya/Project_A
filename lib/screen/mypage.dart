@@ -11,7 +11,8 @@ import 'package:project_a/widget/cupButton.dart';
 import 'package:provider/provider.dart';
 
 class MyPage extends StatefulWidget {
-  const MyPage({super.key});
+  MyPage({super.key, required this.pageNumber});
+  int pageNumber;
 
   @override
   State<MyPage> createState() => _MyPageState();
