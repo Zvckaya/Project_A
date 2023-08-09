@@ -132,10 +132,6 @@ class _HomePageState extends State<HomePage> {
       body: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            _pageProvider.currentPage.toString(),
-            style: TextStyle(fontSize: 20),
-          ),
           Container(
             height: 200,
             child: Padding(

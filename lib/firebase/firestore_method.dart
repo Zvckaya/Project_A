@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -49,6 +51,34 @@ class FirestoreMethods {
       res = "success";
     } catch (err) {
       res = err.toString();
+    }
+    return res;
+  }
+
+  Future<String> postComment(String postId, String text, String uid,
+      String username, String boardtype) async {
+    String res = "오류발생";
+    try {
+      if (text.isNotEmpty) {
+        String commentId = const Uuid().v1();
+        await _firestore
+            .collection(boardtype)
+            .doc(postId)
+            .collection('comments')
+            .doc(commentId)
+            .set({
+          'username': username,
+          'uid': uid,
+          'text': text,
+          'commentId': commentId,
+          'datePublished': DateTime.now()
+        });
+        res = 'successs';
+      } else {
+        res = '글자를 입력하세요';
+      }
+    } catch (e) {
+      res = e.toString();
     }
     return res;
   }
