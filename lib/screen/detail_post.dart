@@ -94,10 +94,12 @@ class _DetailPostState extends State<DetailPost> {
                 Text('0')
               ],
             ),
+            Gaps.v10,
             Expanded(
               child: Comments(
                   postId: widget.snap['postId'].toString(),
-                  board_type: 'posts'),
+                  board_type:
+                      widget.boardtype == 'free' ? 'posts' : 'sec_posts'),
             )
           ],
         ),

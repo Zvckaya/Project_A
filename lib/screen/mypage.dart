@@ -5,14 +5,14 @@ import 'package:project_a/constants/gaps.dart';
 import 'package:project_a/firebase/auth.dart';
 import 'package:project_a/firebase/user_provider.dart';
 import 'package:project_a/models/user.dart' as model;
+import 'package:project_a/screen/home.dart';
 import 'package:project_a/screen/login.dart';
 import 'package:project_a/utils/page_provider.dart';
 import 'package:project_a/widget/cupButton.dart';
 import 'package:provider/provider.dart';
 
 class MyPage extends StatefulWidget {
-  MyPage({super.key, required this.pageNumber});
-  int pageNumber;
+  MyPage({super.key});
 
   @override
   State<MyPage> createState() => _MyPageState();
@@ -35,6 +35,8 @@ class _MyPageState extends State<MyPage> {
 
   Future<void> signOut() async {
     await Auth().signOut();
+    Navigator.of(context)
+        .pushReplacement(MaterialPageRoute(builder: (context) => LoginPage()));
   }
 
   @override
@@ -55,7 +57,10 @@ class _MyPageState extends State<MyPage> {
         child: Column(children: [
           Gaps.v32,
           Container(
-            child: Text('어서오세요 ${user?.username}님'),
+            child: Text(
+              '어서오세요 ${user?.username}님',
+              style: TextStyle(fontSize: 20),
+            ),
           ),
           Gaps.v10,
           CupertinoButton(

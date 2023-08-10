@@ -42,6 +42,8 @@ class _LoginPageState extends State<LoginPage> {
       });
       await Auth().signInWithEmailAndPassword(
           email: _idController.text, password: _passwordController.text);
+      Navigator.of(context)
+          .pushReplacement(MaterialPageRoute(builder: (context) => HomePage()));
     } on FirebaseAuthException catch (e) {
       setState(() {
         errorMessage = e.message;

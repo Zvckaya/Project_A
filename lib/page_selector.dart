@@ -59,13 +59,8 @@ class _PageSelectorState extends State<PageSelector> {
             body: PageView(
               physics: NeverScrollableScrollPhysics(),
               children: [
-                HomePage(
-                  pageNumber: 1,
-                  goNext: goMyPage,
-                ),
-                MyPage(
-                  pageNumber: 2,
-                ),
+                HomePage(),
+                MyPage(),
               ],
               controller: pageController,
             ),

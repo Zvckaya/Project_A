@@ -30,11 +30,8 @@ enum SiteUrl {
 class HomePage extends StatefulWidget {
   HomePage({
     super.key,
-    required this.pageNumber,
-    required this.goNext,
   });
-  int pageNumber;
-  VoidCallback? goNext;
+
   @override
   State<HomePage> createState() => _HomePageState();
 }
@@ -123,7 +120,11 @@ class _HomePageState extends State<HomePage> {
             child: IconButton(
               icon: Icon(Icons.perm_identity),
               onPressed: () {
-                widget.goNext;
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => MyPage(),
+                  ),
+                );
               },
             ),
           )

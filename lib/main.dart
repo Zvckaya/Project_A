@@ -6,6 +6,7 @@ import 'package:project_a/firebase/auth.dart';
 import 'package:project_a/firebase/user_provider.dart';
 import 'package:project_a/page_selector.dart';
 import 'package:project_a/screen/add_post_screen.dart';
+import 'package:project_a/screen/home.dart';
 import 'package:project_a/screen/login.dart';
 import 'package:project_a/utils/page_provider.dart';
 import 'package:provider/provider.dart';
@@ -50,7 +51,7 @@ class MyApp extends StatelessWidget {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.active) {
               if (snapshot.hasData) {
-                return PageSelector();
+                return HomePage();
               }
             }
             if (snapshot.connectionState == ConnectionState.waiting) {

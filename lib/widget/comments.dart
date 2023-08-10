@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:project_a/constants/gaps.dart';
 import 'package:project_a/firebase/firestore_method.dart';
 import 'package:project_a/firebase/user_provider.dart';
 import 'package:project_a/models/user.dart';
@@ -36,11 +37,14 @@ class _CommentsState extends State<Comments> {
             child: CircularProgressIndicator(),
           );
         }
-        return ListView.builder(
+        return ListView.separated(
           itemCount: snapshot.data!.docs.length,
           itemBuilder: (context, index) => CommentCard(
             snap: snapshot.data!.docs[index],
           ),
+          separatorBuilder: (context, index) {
+            return Divider();
+          },
         );
       },
     );
