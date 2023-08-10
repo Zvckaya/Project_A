@@ -11,7 +11,8 @@ import 'package:provider/provider.dart';
 
 class PostCard extends StatefulWidget {
   final snap;
-  const PostCard({super.key, required this.snap});
+  String boardtype;
+  PostCard({super.key, required this.snap, required this.boardtype});
 
   @override
   State<PostCard> createState() => _PostCardState();
@@ -28,7 +29,11 @@ class _PostCardState extends State<PostCard> {
   void goDetailPost(final snap, User user) {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => DetailPost(snap: snap, user: user),
+        builder: (context) => DetailPost(
+          snap: snap,
+          user: user,
+          boardtype: widget.boardtype,
+        ),
       ),
     );
   }

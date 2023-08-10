@@ -40,6 +40,7 @@ class _FreeBoardState extends State<SecretBoard> {
                 itemBuilder: (context, idx) {
                   return PostCard(
                     snap: snapshot.data!.docs[idx].data(),
+                    boardtype: 'sec',
                   );
                 },
                 separatorBuilder: (context, index) {

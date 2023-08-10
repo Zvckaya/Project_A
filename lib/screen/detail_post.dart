@@ -7,8 +7,13 @@ import 'package:project_a/widget/comments.dart';
 import 'package:provider/provider.dart';
 
 class DetailPost extends StatefulWidget {
-  DetailPost({super.key, required this.snap, required this.user});
+  DetailPost(
+      {super.key,
+      required this.snap,
+      required this.user,
+      required this.boardtype});
   final snap;
+  String boardtype;
   User user;
   @override
   State<DetailPost> createState() => _DetailPostState();
@@ -16,17 +21,13 @@ class DetailPost extends StatefulWidget {
 
 class _DetailPostState extends State<DetailPost> {
   final TextEditingController commetController = TextEditingController();
+  bool? isChecked = true;
 
-  void postComment(
-      String postId, String uid, String username, String boardtype) async {
+  void postComment(String postId, String uid, String username, String boardtype,
+      bool anonymous) async {
     try {
       String res = await FirestoreMethods().postComment(
-        postId,
-        commetController.text,
-        uid,
-        username,
-        boardtype,
-      );
+          postId, commetController.text, uid, username, boardtype, anonymous);
       if (res != 'success') {
         if (context.mounted)
           SnackBar(
@@ -44,7 +45,7 @@ class _DetailPostState extends State<DetailPost> {
     final User? user = Provider.of<UserProvider>(context).getUser;
     return Scaffold(
       appBar: AppBar(
-        title: Text('자유게시판'),
+        title: Text('${widget.boardtype == "free" ? '자유' : '비밀'}게시판'),
         actions: [
           IconButton(
             onPressed: () {},
@@ -101,27 +102,50 @@ class _DetailPostState extends State<DetailPost> {
           ],
         ),
       ),
-      bottomNavigationBar: SafeArea(
-        child: Container(
-          height: kToolbarHeight,
-          margin:
-              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-          padding: EdgeInsets.only(left: 16, right: 8),
-          child: Row(
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.only(left: 16, right: 8),
-                  child: TextField(
-                    controller: commetController,
-                    decoration: InputDecoration(
-                        hintText: '${user!.username}님으로 글 작성',
-                        border: InputBorder.none),
+      bottomNavigationBar: Container(
+        color: Colors.black,
+        height: 100,
+        margin:
+            EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+        padding: EdgeInsets.only(
+          bottom: 40,
+        ),
+        child: Row(
+          children: [
+            Checkbox(
+                value: isChecked,
+                onChanged: (val) {
+                  setState(() {
+                    isChecked = val;
+                  });
+                }),
+            Text('익명'),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                child: TextField(
+                  controller: commetController,
+                  decoration: InputDecoration(
+                    hintText: '댓글을 작성하세요.',
+                    border: InputBorder.none,
                   ),
                 ),
-              )
-            ],
-          ),
+              ),
+            ),
+            IconButton(
+              onPressed: () {
+                String board_t;
+                if (widget.boardtype == 'free') {
+                  board_t = 'posts';
+                } else {
+                  board_t = 'sec_posts';
+                }
+                postComment(widget.snap['postId'], user!.uid, user.username,
+                    board_t, isChecked!);
+              },
+              icon: Icon(Icons.send),
+            )
+          ],
         ),
       ),
     );

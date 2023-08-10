@@ -8,12 +8,13 @@ class CommentCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            '익명1',
+            snap['anonymous'] ? '익명' : snap['username'],
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
-          Text('우리는 틀리지 않았다...')
+          Text(snap['text'])
         ],
       ),
     );

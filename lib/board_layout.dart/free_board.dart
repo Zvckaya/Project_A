@@ -43,6 +43,7 @@ class _FreeBoardState extends State<FreeBoard> {
                 itemBuilder: (context, idx) {
                   return PostCard(
                     snap: snapshot.data!.docs[idx].data(),
+                    boardtype: 'free',
                   );
                 },
                 separatorBuilder: (context, index) {

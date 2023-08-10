@@ -20,29 +20,6 @@ class Comments extends StatefulWidget {
 }
 
 class _CommentsState extends State<Comments> {
-  final TextEditingController commetController = TextEditingController();
-
-  void postComment(String uid, String username, String boardtype) async {
-    try {
-      String res = await FirestoreMethods().postComment(
-        widget.postId,
-        commetController.text,
-        uid,
-        username,
-        boardtype,
-      );
-      if (res != 'success') {
-        if (context.mounted)
-          SnackBar(
-            content: Text(res.toString()),
-          );
-      }
-      setState(() {
-        commetController.text = "";
-      });
-    } catch (e) {}
-  }
-
   @override
   Widget build(BuildContext context) {
     final User? user = Provider.of<UserProvider>(context).getUser;

@@ -56,7 +56,7 @@ class FirestoreMethods {
   }
 
   Future<String> postComment(String postId, String text, String uid,
-      String username, String boardtype) async {
+      String username, String boardtype, bool anonymous) async {
     String res = "오류발생";
     try {
       if (text.isNotEmpty) {
@@ -71,7 +71,8 @@ class FirestoreMethods {
           'uid': uid,
           'text': text,
           'commentId': commentId,
-          'datePublished': DateTime.now()
+          'datePublished': DateTime.now(),
+          'anonymous': anonymous
         });
         res = 'successs';
       } else {
