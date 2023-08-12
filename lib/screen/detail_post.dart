@@ -40,17 +40,54 @@ class _DetailPostState extends State<DetailPost> {
     } catch (e) {}
   }
 
+  deletePost(String postId, String board_type) async {
+    try {
+      await FirestoreMethods().deletePost(postId, board_type);
+      Navigator.of(context).pop();
+    } catch (err) {
+      SnackBar(
+        content: Text(err.toString()),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final User? user = Provider.of<UserProvider>(context).getUser;
     return Scaffold(
       appBar: AppBar(
-        title: Text('${widget.boardtype == "free" ? '자유' : '비밀'}게시판'),
+        title: Text('${widget.boardtype == "posts" ? '자유' : '비밀'}게시판'),
         actions: [
-          IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.more_vert),
-          ),
+          widget.snap['uid'].toString() == user!.uid
+              ? IconButton(
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return Dialog(
+                            child: ListView(
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              shrinkWrap: true,
+                              children: ['Delete']
+                                  .map((e) => InkWell(
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 12, horizontal: 16),
+                                        child: Text(e),
+                                      ),
+                                      onTap: () {
+                                        deletePost(
+                                            widget.snap['postId'].toString(),
+                                            widget.boardtype);
+                                      }))
+                                  .toList(),
+                            ),
+                          );
+                        });
+                  },
+                  icon: Icon(Icons.more_vert),
+                )
+              : IconButton(onPressed: () {}, icon: Icon(Icons.more_vert))
         ],
       ),
       body: Padding(

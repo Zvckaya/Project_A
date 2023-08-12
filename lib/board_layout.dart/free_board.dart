@@ -43,7 +43,7 @@ class _FreeBoardState extends State<FreeBoard> {
                 itemBuilder: (context, idx) {
                   return PostCard(
                     snap: snapshot.data!.docs[idx].data(),
-                    boardtype: 'free',
+                    boardtype: 'posts',
                   );
                 },
                 separatorBuilder: (context, index) {
@@ -64,7 +64,7 @@ class _FreeBoardState extends State<FreeBoard> {
             PageRouteBuilder(
               pageBuilder: (context, animation, secondaryAnimation) =>
                   AddPostScreen(
-                board_type: "free",
+                board_type: "posts",
               ),
               transitionsBuilder:
                   (context, animation, secondaryAnimation, child) {

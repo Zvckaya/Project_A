@@ -84,6 +84,17 @@ class FirestoreMethods {
     return res;
   }
 
+  Future<String> deletePost(String postId, String board_type) async {
+    String res = "오류발생";
+    try {
+      await _firestore.collection(board_type).doc(postId).delete();
+      res = 'succes';
+    } catch (err) {
+      res = err.toString();
+    }
+    return res;
+  }
+
   static String getPostday(Timestamp post) {
     DateTime date = DateTime.parse(post.toDate().toString());
     DateFormat formatter = DateFormat('M월 dd일');

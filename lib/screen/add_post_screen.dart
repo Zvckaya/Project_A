@@ -34,7 +34,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
       _isLoading = true;
     });
     try {
-      if (widget.board_type == "free") {
+      if (widget.board_type == "posts") {
         String res = await FirestoreMethods().uploadPost(
             formDate['title'].toString(),
             formDate['description'].toString(),
